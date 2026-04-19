@@ -31,39 +31,6 @@ ReLaunch AI transforms resumes, closes skill gaps, rehearses interviews, and ref
 
 ---
 
-## 📁 Project Structure
-
-```
-app/
-├── backend/
-│   ├── server.py            # FastAPI app, all /api routes
-│   ├── requirements.txt
-│   └── .env                 # MONGO_URL, DB_NAME, EMERGENT_LLM_KEY
-├── frontend/
-│   ├── src/
-│   │   ├── App.js           # Router
-│   │   ├── lib/api.js       # axios + session id helper
-│   │   ├── components/
-│   │   │   ├── Navbar.jsx
-│   │   │   ├── Footer.jsx
-│   │   │   ├── FloatingChat.jsx
-│   │   │   └── ui/          # Shadcn primitives
-│   │   └── pages/
-│   │       ├── Landing.jsx
-│   │       ├── Dashboard.jsx
-│   │       ├── Resume.jsx
-│   │       ├── Skills.jsx
-│   │       ├── Interview.jsx
-│   │       ├── Story.jsx
-│   │       └── Chat.jsx
-│   ├── package.json
-│   └── .env                 # REACT_APP_BACKEND_URL
-└── memory/
-    └── PRD.md
-```
-
----
-
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -71,41 +38,6 @@ app/
 - Python 3.10+
 - MongoDB (local or Atlas)
 - An Emergent Universal LLM key (or OpenAI key)
-
-### 1. Backend
-
-```bash
-cd backend
-pip install -r requirements.txt
-
-# Create .env
-cat > .env <<EOF
-MONGO_URL="mongodb://localhost:27017"
-DB_NAME="relaunch_ai"
-CORS_ORIGINS="*"
-EMERGENT_LLM_KEY="sk-emergent-..."
-EOF
-
-# Run
-uvicorn server:app --host 0.0.0.0 --port 8001 --reload
-```
-
-### 2. Frontend
-
-```bash
-cd frontend
-yarn install
-
-# Create .env
-cat > .env <<EOF
-REACT_APP_BACKEND_URL=http://localhost:8001
-EOF
-
-# Run
-yarn start
-```
-
-Open http://localhost:3000 💜
 
 ---
 
@@ -128,29 +60,6 @@ All endpoints are prefixed with `/api`.
 | `POST`   | `/progress/update` | Mark a step complete |
 | `GET`    | `/progress/{session_id}` | Get progress |
 | `DELETE` | `/progress/{session_id}` | Reset progress + chat (dashboard "Start fresh") |
-
-### Example: Enhance a resume
-
-```bash
-curl -X POST http://localhost:8001/api/resume/enhance \
-  -H "Content-Type: application/json" \
-  -d '{
-    "resume_text": "Priya Sharma · Product Manager · 8 yrs experience...",
-    "career_break_duration": "3 years",
-    "break_reason": "maternity leave",
-    "target_role": "Senior Product Manager"
-  }'
-```
-
-Response:
-```json
-{
-  "enhanced_resume": "...",
-  "improvements": ["Stronger action verbs", "Quantified impact", "..."],
-  "career_break_reframed": "I took a three-year intentional break to...",
-  "confidence_note": "You're bringing more than you realize."
-}
-```
 
 ---
 
