@@ -7,6 +7,7 @@ import logging
 import io
 import json
 import re
+import asyncio
 from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
@@ -41,6 +42,20 @@ def new_chat(session_id: str, system_message: str, model: str = "gpt-5.2") -> Ll
         session_id=session_id,
         system_message=system_message,
     ).with_model("openai", model)
+
+
+async def send_with_retry(chat: LlmChat, text: str, attempts: int = 3, base_delay: float = 1.2) -> str:
+    """Send message with simple retry to smooth over transient proxy/budget hiccups."""
+    last_err = None
+    for i in range(attempts):
+        try:
+            return await chat.send_message(UserMessage(text=text))
+        except Exception as e:
+            last_err = e
+            logger.warning("LLM call failed (attempt %s/%s): %s", i + 1, attempts, e)
+            if i < attempts - 1:
+                await asyncio.sleep(base_delay * (i + 1))
+    raise last_err if last_err else RuntimeError("LLM call failed")
 
 
 def extract_json(text: str) -> dict:
@@ -225,7 +240,7 @@ Return ONLY a JSON object with keys:
 - "confidence_note": one short warm encouraging sentence to the user
 """
     chat = new_chat(session_id=f"enhance-{uuid.uuid4()}", system_message=system)
-    resp = await chat.send_message(UserMessage(text=prompt))
+    resp = await send_with_retry(chat, prompt)
     data = extract_json(resp)
     if not data:
         raise HTTPException(status_code=500, detail="AI response could not be parsed")
@@ -255,7 +270,7 @@ Return ONLY a JSON object with keys:
 - "estimated_weeks": integer estimated weeks of focused study to be interview-ready
 """
     chat = new_chat(session_id=f"skills-{uuid.uuid4()}", system_message=system)
-    resp = await chat.send_message(UserMessage(text=prompt))
+    resp = await send_with_retry(chat, prompt)
     data = extract_json(resp)
     if not data:
         raise HTTPException(status_code=500, detail="AI response could not be parsed")
@@ -295,7 +310,7 @@ Return ONLY a JSON object with key "questions" = array of 6 objects:
 - "why_asked": 1 sentence explaining why interviewers ask this
 """
     chat = new_chat(session_id=f"iq-{uuid.uuid4()}", system_message=system)
-    resp = await chat.send_message(UserMessage(text=prompt))
+    resp = await send_with_retry(chat, prompt)
     data = extract_json(resp)
     qs = []
     for q in (data.get("questions") or []):
@@ -332,7 +347,7 @@ Return ONLY a JSON object with keys:
 - "confidence_tip": one warm practical tip to feel more confident delivering this answer
 """
     chat = new_chat(session_id=f"fb-{uuid.uuid4()}", system_message=system)
-    resp = await chat.send_message(UserMessage(text=prompt))
+    resp = await send_with_retry(chat, prompt)
     data = extract_json(resp)
     if not data:
         raise HTTPException(status_code=500, detail="AI response could not be parsed")
@@ -364,7 +379,7 @@ Return ONLY a JSON object with keys:
 - "elevator_pitch": a warm, confident 3-4 sentence elevator pitch the user can say in an interview when asked about their break
 """
     chat = new_chat(session_id=f"story-{uuid.uuid4()}", system_message=system)
-    resp = await chat.send_message(UserMessage(text=prompt))
+    resp = await send_with_retry(chat, prompt)
     data = extract_json(resp)
     if not data:
         raise HTTPException(status_code=500, detail="AI response could not be parsed")
@@ -397,7 +412,7 @@ async def chat_message(req: ChatMessageRequest):
     # Load prior history to seed continuity (emergentintegrations handles session continuity via session_id,
     # but we persist separately for UI)
     chat = new_chat(session_id=req.session_id, system_message=system)
-    resp = await chat.send_message(UserMessage(text=req.message))
+    resp = await send_with_retry(chat, req.message)
 
     reply_ts = datetime.now(timezone.utc).isoformat()
     await db.chat_messages.insert_one({
