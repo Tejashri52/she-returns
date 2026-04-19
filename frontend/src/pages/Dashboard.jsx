@@ -5,6 +5,18 @@ import { api, getSessionId, getUserName, setUserName } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
+import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import {
   FileText,
   Target,
@@ -15,6 +27,7 @@ import {
   CheckCircle2,
   Sparkles,
   Heart,
+  RotateCcw,
 } from "lucide-react";
 
 const QUICK_ACTIONS = [
@@ -56,6 +69,16 @@ export default function Dashboard() {
     if (n) {
       setUserName(n);
       setName(n);
+    }
+  };
+
+  const resetDashboard = async () => {
+    try {
+      await api.delete(`/progress/${sessionId}`);
+      setProgress({});
+      toast.success("Fresh start — your dashboard is clear ✨");
+    } catch (e) {
+      toast.error("Could not reset. Try again?");
     }
   };
 
@@ -107,7 +130,40 @@ export default function Dashboard() {
             <div className="text-sm font-semibold text-[#1A1A24]">Your journey</div>
             <div className="text-xs text-gray-500">{completed} of {STEPS.length} steps complete</div>
           </div>
-          <div className="font-heading font-bold text-2xl text-[#7C6CF6]">{pct}%</div>
+          <div className="flex items-center gap-3">
+            <div className="font-heading font-bold text-2xl text-[#7C6CF6]">{pct}%</div>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="rounded-full text-gray-500 hover:text-[#B44B2E] hover:bg-[#FFE3DB]"
+                  data-testid="dashboard-reset-btn"
+                >
+                  <RotateCcw className="w-3.5 h-3.5 mr-1" /> Start fresh
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent className="rounded-3xl" data-testid="reset-dialog">
+                <AlertDialogHeader>
+                  <AlertDialogTitle className="font-heading">Reset your dashboard?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This clears your progress tracker and chat history on this device. Your saved name stays.
+                    You can always begin again — no judgment.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel className="rounded-full" data-testid="reset-cancel-btn">Not now</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={resetDashboard}
+                    className="rounded-full bg-[#1A1A24] hover:bg-black"
+                    data-testid="reset-confirm-btn"
+                  >
+                    Yes, start fresh
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
         </div>
         <Progress value={pct} className="mt-4 h-2 bg-[#F3F0FF]" />
         <div className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-3">

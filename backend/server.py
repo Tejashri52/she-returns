@@ -462,6 +462,14 @@ async def get_progress(session_id: str):
     return doc or {"session_id": session_id, "steps": {}}
 
 
+@api_router.delete("/progress/{session_id}")
+async def reset_progress(session_id: str):
+    """Reset dashboard: clear progress tracker AND chat history for this session."""
+    p = await db.progress.delete_many({"session_id": session_id})
+    c = await db.chat_messages.delete_many({"session_id": session_id})
+    return {"progress_deleted": p.deleted_count, "chat_deleted": c.deleted_count}
+
+
 app.include_router(api_router)
 
 app.add_middleware(
