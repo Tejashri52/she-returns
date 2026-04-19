@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import { api, getSessionId } from "@/lib/api";
-import { MessageCircleHeart, X, Send, Sparkles } from "lucide-react";
+import { MessageCircleHeart, X, Send, Sparkles, Trash2 } from "lucide-react";
 
 export default function FloatingChat() {
   const { pathname } = useLocation();
@@ -35,6 +35,13 @@ export default function FloatingChat() {
     } finally {
       setSending(false);
     }
+  };
+
+  const clearChat = async () => {
+    try {
+      await api.delete(`/chat/history/${sessionId}`);
+    } catch {}
+    setMessages([]);
   };
 
   return (

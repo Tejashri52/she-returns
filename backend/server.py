@@ -432,6 +432,12 @@ async def chat_history(session_id: str):
     return [ChatHistoryItem(**i) for i in items]
 
 
+@api_router.delete("/chat/history/{session_id}")
+async def clear_chat_history(session_id: str):
+    result = await db.chat_messages.delete_many({"session_id": session_id})
+    return {"deleted": result.deleted_count}
+
+
 # Progress tracking (simple per-session)
 class ProgressUpdate(BaseModel):
     session_id: str

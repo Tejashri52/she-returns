@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
 import { api, getSessionId } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MessageCircleHeart, Send, Sparkles } from "lucide-react";
+import { MessageCircleHeart, Send, Sparkles, Trash2 } from "lucide-react";
 
 const SUGGESTIONS = [
   "How do I explain my 3-year career break?",
@@ -24,6 +25,16 @@ export default function Chat() {
       const r = await api.get(`/chat/history/${sessionId}`);
       setMessages(r.data || []);
     } catch {}
+  };
+
+  const clearChat = async () => {
+    try {
+      await api.delete(`/chat/history/${sessionId}`);
+      setMessages([]);
+      toast.success("Fresh start — chat cleared");
+    } catch {
+      toast.error("Could not clear chat");
+    }
   };
 
   useEffect(() => {
@@ -64,6 +75,23 @@ export default function Chat() {
       </p>
 
       <div className="mt-8 rounded-3xl bg-white border border-gray-100 shadow-soft overflow-hidden">
+        <div className="flex items-center justify-between px-6 py-3 border-b border-gray-100 bg-white/70">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <div className="w-2 h-2 rounded-full bg-[#4FD1C5] animate-pulse" />
+            {messages.length > 0 ? `${messages.length} message${messages.length === 1 ? "" : "s"}` : "Online & ready"}
+          </div>
+          {messages.length > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={clearChat}
+              className="rounded-full text-gray-500 hover:text-[#B44B2E] hover:bg-[#FFE3DB]"
+              data-testid="chat-clear-btn"
+            >
+              <Trash2 className="w-3.5 h-3.5 mr-1" /> Clear chat
+            </Button>
+          )}
+        </div>
         <div
           ref={scrollRef}
           className="h-[500px] overflow-y-auto scroll-soft p-6 grain"
