@@ -1,0 +1,127 @@
+{
+  "project_name": "ReLaunch AI",
+  "domain": "Career assistance, AI coaching, Women returning to workforce",
+  "theme": "Light",
+  "archetype": "Archetype 3 (Pastel & Soft) mixed with Archetype 1 (Organic & Earthy)",
+  "emotional_tone": "Empowering, Supportive, Intelligent, Trustworthy, Human-Centered",
+  "colors": {
+    "background": "#F9FAFB",
+    "foreground": "#1A1A24",
+    "primary": "#7C6CF6",
+    "primary_foreground": "#FFFFFF",
+    "secondary": "#FFB7A5",
+    "secondary_foreground": "#1A1A24",
+    "accent": "#4FD1C5",
+    "accent_foreground": "#FFFFFF",
+    "muted": "#F3F4F6",
+    "muted_foreground": "#6B7280",
+    "card": "#FFFFFF",
+    "card_foreground": "#1A1A24",
+    "border": "#E5E7EB",
+    "input": "#F3F4F6",
+    "ring": "#7C6CF6"
+  },
+  "typography": {
+    "headings_font": "Outfit",
+    "body_font": "DM Sans",
+    "font_weights": {
+      "headings": "600, 700",
+      "body": "400, 500"
+    },
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-tight",
+      "h2": "text-3xl sm:text-4xl tracking-tight",
+      "h3": "text-2xl sm:text-3xl",
+      "h4": "text-xl sm:text-2xl",
+      "body": "text-base leading-relaxed text-gray-700",
+      "muted": "text-sm text-gray-500",
+      "labels": "text-xs font-bold uppercase tracking-wider text-gray-500"
+    }
+  },
+  "layout_and_spacing": {
+    "spacing_scale": "Generous spacing. Use p-6, p-8, p-12 for sections. Ensure cards have internal padding of p-6 or p-8.",
+    "border_radius": "rounded-2xl and rounded-3xl for a soft, friendly, and approachable feel.",
+    "shadows": {
+      "default": "shadow-[0_8px_30px_rgb(0,0,0,0.04)]",
+      "hover": "shadow-[0_20px_40px_rgb(124,108,246,0.08)]",
+      "glass": "shadow-[0_8px_32px_rgba(0,0,0,0.08)] backdrop-blur-xl"
+    },
+    "grids": {
+      "dashboard": "Use 'MODE B: THE CONTROL ROOM' but soft. grid-cols-1 md:grid-cols-3 gap-6. Avoid heavy borders.",
+      "marketing": "Use 'MODE A: THE TETRIS GRID' for feature highlights. Asymmetrical, gap-8."
+    }
+  },
+  "motion_and_interactions": {
+    "hover_states": "Buttons translate-y-[1px] with increased shadow. Cards slightly lift on hover.",
+    "page_transitions": "Fade in and slide up slightly using framer-motion.",
+    "loading_states": "Use pulse animations or playful skeleton loaders. AI processing needs a distinct 'thinking' state (e.g., pulsing border or glowing text in Soft Purple, with supportive microcopy like 'Analyzing your amazing experience...')."
+  },
+  "component_guidelines": {
+    "buttons": "Fully rounded (rounded-full) for primary actions. Use Soft Purple for primary CTA, Teal for success/completion. Warm Peach for secondary/supportive actions.",
+    "cards": "White background, rounded-2xl or rounded-3xl, 1px border of very light gray (#E5E7EB) or border-transparent, soft shadow.",
+    "inputs": "rounded-xl, bg-white, border border-gray-200, focus:ring-2 focus:ring-purple-400 focus:border-transparent.",
+    "navigation": "Sticky header with glassmorphism (bg-white/80 backdrop-blur-md). Logo on left, nav links centered, CTA on right.",
+    "steppers": "Use visual progress indicators with soft connecting lines. Active step in Soft Purple, completed in Teal."
+  },
+  "media": {
+    "hero_abstract_background": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/08ed13a0-5b84-47f7-9e69-36d56be68859/images/518c4f8dee020421f0a3e44e5af800d64ae69d1a982f739e703866989c409610.png",
+      "description": "Abstract 3D soft geometric shapes in pastel purple, peach, and teal.",
+      "placement": "Landing page hero section right side or as a background graphic."
+    },
+    "career_growth_concept": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/08ed13a0-5b84-47f7-9e69-36d56be68859/images/5e0e404d2cdfcf03ca92e0b463b8c2ab6ddcb0d7db7d624b9707ac2fe0aed37d.png",
+      "description": "Minimalist clean career growth concept 3D staircase.",
+      "placement": "Feature section for 'Skill Gap Analyzer' or 'Career Break Reframed'."
+    },
+    "gradient_texture_bg": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/08ed13a0-5b84-47f7-9e69-36d56be68859/images/bcafdaa08ff09321b98ab5fd80ddd72f6985b7e42515e00a3b83294cdf673223.png",
+      "description": "Subtle grainy gradient background.",
+      "placement": "Background for AI Chat Assistant, or the Interview Coach section to feel calming."
+    }
+  },
+  "pages_and_features": {
+    "landing_page": {
+      "sections": ["Hero", "Problem Statement", "How it Works (3 steps)", "Features Overview", "Testimonials", "Footer"],
+      "styling": "Use asymmetrical bento grid for features. Hero needs bold Outfit font and the hero_abstract_background image."
+    },
+    "dashboard": {
+      "layout": "Sidebar navigation or top nav with progress tracker. Quick action cards (Upload Resume, Analyze Skills, Practice Interview).",
+      "styling": "Clean white cards on #F9FAFB background. Personalize greeting ('Welcome back, Sarah. You're doing great')."
+    },
+    "resume_enhancement": {
+      "features": ["File upload (PDF/DOCX)", "Career Break Duration Input", "Career Break Reframed Output"],
+      "styling": "Use two-column layout: Input/Upload on left, AI generated reframed resume on right. Teal highlights for added skills."
+    },
+    "skill_gap_analyzer": {
+      "features": ["Target role input", "Current skills", "Missing skills output", "Learning path"],
+      "styling": "Use progress bars and badging for skills. Soft Purple for learning path steps."
+    },
+    "interview_coach": {
+      "features": ["AI generated questions", "Answer input", "Feedback & Confidence tips"],
+      "styling": "Conversational UI. Highlight feedback with Warm Peach for empathy, Teal for actionable tips."
+    },
+    "ai_chat_assistant": {
+      "features": ["Floating widget or dedicated page", "Emotional support", "Career advice"],
+      "styling": "Use the gradient_texture_bg for the chat interface to feel calming. Bubbles should be rounded-2xl."
+    },
+    "career_break_story_generator": {
+      "features": ["Input personal experiences", "AI conversion to professional skills"],
+      "styling": "Step-by-step wizard. Very supportive microcopy. Use Framer Motion for smooth transitions between questions."
+    }
+  },
+  "instructions_to_main_agent": [
+    "Initialize Tailwind CSS with the provided color palette in tailwind.config.js.",
+    "Install and setup Google Fonts: 'Outfit' for headings, 'DM Sans' for body.",
+    "Use 'lucide-react' for icons, stick to soft, modern icons.",
+    "Implement Shadcn UI but heavily override default border-radius to 'rounded-2xl' or 'rounded-3xl' and use the specified soft shadows to avoid the generic 'Vercel-look'.",
+    "CRITICAL: All interactive elements MUST include data-testid attribute for testing (e.g., data-testid='upload-resume-button').",
+    "Use framer-motion for all major transitions, step-by-step wizards, and loading states.",
+    "Avoid harsh black borders; use soft gray or colored borders (e.g., border-gray-100 or border-purple-100).",
+    "Use 'react-dropzone' for file uploads on the resume page.",
+    "Ensure 'recharts' is used if any skill progression charts are built.",
+    "DO NOT use placeholder text or dummy images. ONLY use the URLs provided in the media section.",
+    "Apply 'glassmorphism' styles to sticky headers and AI floating assistant (backdrop-blur-xl bg-white/70).",
+    "Write highly empathetic, human-centered microcopy in loading states and empty states (e.g., 'You've got this!', 'Translating your life skills to professional superpowers...')."
+  ]
+}
